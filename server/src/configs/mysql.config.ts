@@ -1,10 +1,12 @@
 // Config params for MySQL DB
 
 export const config = {
-    HOST: 'localhost',
-    DB: 'user-db',
-    USER: 'mysql-root',
-    PASSWORD: 'mysql123',
+    HOST: process.env.MYSQL_DB_HOST,
+    USER: process.env.MYSQL_DB_USER,
+    PASSWORD: process.env.MYSQL_DB_PASSWORD,
+    DB: process.env.MYSQL_DB_NAME,
+    port: process.env.MYSQL_DB_PORT,
+    dialect: 'mysql',
     pool: {
         max: 5,
         min: 0,

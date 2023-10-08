@@ -1,5 +1,6 @@
-import cors from 'cors';
 import * as dotenv from 'dotenv';
+dotenv.config(); // This line needs to be called prior to other places using dotenv, ie. DB configuration
+import cors from 'cors';
 import express from 'express';
 import cookieSession from 'cookie-session';
 import { mysqlDB } from './databases/mysql.db';
@@ -8,12 +9,11 @@ import { authRouter } from './routes/auth.router';
 import { userRouter } from './routes/user.router';
 
 /** Set the running port */
-
-dotenv.config();
-if (!process.env.PORT) {
+if (!process.env.SERVER_DOCKER_PORT) {
+    console.log('The SERVER_DOCKER_PORT is not defined!');
     process.exit(1);
 }
-const port: number = parseInt(process.env.PORT as string, 10);
+const port: number = parseInt(process.env.SERVER_DOCKER_PORT as string, 10);
 
 /** Prepare app */
 
@@ -39,5 +39,5 @@ app.use('/api', userRouter);
 
 /** Server activation */
 app.listen(port, () => {
-    console.log(`The Node server is listening at Port ${port}`);
+    console.log(`The Node server is listening on Port ${port}`);
 });
