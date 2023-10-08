@@ -46,14 +46,23 @@ const login = async (req: Request, res: Response) => {
             expiresIn: 30 * 60 // 30 mins
         });
 
-        res.status(200).send({
+        console.log(
+            `DEBUG: Before token req is: req.headers ${req.headers}, req.body ${req.body}, req.session ${req.session}`
+        );
+
+        (req.session as any).token = token;
+
+        console.log(
+            `DEBUG: After session setting, the req is: req.headers ${req.headers}, req.body ${req.body}, req.session ${req.session}`
+        );
+
+        return res.status(200).send({
             id: user.id,
             username: user.username,
             email: user.email
         });
-
-        return res.status(200).send();
     } catch (e) {
+        console.log(`The error is ${JSON.stringify(e)}`);
         res.status(500).send('The login process erred out!');
     }
 };
