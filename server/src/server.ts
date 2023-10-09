@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import cookieSession from 'cookie-session';
 import { mysqlDB } from './databases/mysql.db';
+import { mongoDB } from './databases/mongo.db';
 import { helloRouter } from './routes/hello.router';
 import { authRouter } from './routes/auth.router';
 import { userRouter } from './routes/user.router';
@@ -40,6 +41,15 @@ initData();
 
 // Initialize Databases
 mysqlDB.sequelize.sync();
+mongoDB.mongoose
+    .connect(mongoDB.url)
+    .then(() => {
+        console.log('INFO: Connected to Mongo DB!');
+    })
+    .catch((err) => {
+        console.log('Cannot connect to the database!', err);
+        process.exit(1);
+    });
 
 /** Inject routers, prepend them with the '/api' keyword */
 app.use('/api', helloRouter);

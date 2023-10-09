@@ -4,6 +4,7 @@ services:
   server:
     depends_on:
       - mysqldb
+      - mongodb
       - redis
     build: ./server
     restart: unless-stopped
@@ -16,6 +17,11 @@ services:
       - MYSQL_DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
       - MYSQL_DB_NAME=$MYSQLDB_DATABASE
       - MYSQL_DB_PORT=$MYSQLDB_DOCKER_PORT
+      - MONGO_DB_HOST=mongodb
+      - MONGO_DB_USER=$MONGO_USER
+      - MONGO_DB_PASSWORD=$MONGO_ROOT_PASSWORD
+      - MONGO_DB_NAME=$MONGO_DATABASE
+      - MONGO_DB_PORT=$MONGO_DOCKER_PORT
     stdin_open: true
     tty: true
   mysqldb:
@@ -29,6 +35,17 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - mysql_db:/var/lib/mysql
+  mongodb:
+    image: mongo:7.0.2
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
+    ports:
+      - $MONGO_LOCAL_PORT:$MONGO_DOCKER_PORT
+    volumes:
+      - mongo_db:/data/db
   redis:
     image: "redis:7.2.1-alpine3.18"
     ports:
@@ -36,3 +53,4 @@ services:
 
 volumes:
   mysql_db:
+  mongo_db:
