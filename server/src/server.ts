@@ -7,6 +7,7 @@ import { mysqlDB } from './databases/mysql.db';
 import { helloRouter } from './routes/hello.router';
 import { authRouter } from './routes/auth.router';
 import { userRouter } from './routes/user.router';
+import { getTickerCompanyMap } from './services/getTickerCompanyMap.service';
 
 /** Set the running port */
 if (!process.env.SERVER_DOCKER_PORT) {
@@ -16,7 +17,6 @@ if (!process.env.SERVER_DOCKER_PORT) {
 const port: number = parseInt(process.env.SERVER_DOCKER_PORT as string, 10);
 
 /** Prepare app */
-
 const app = express();
 
 app.use(express.json()); // parse requests of content-type - application/json
@@ -29,6 +29,18 @@ app.use(
     })
 );
 
+// Initialize Necessary Data
+export let tickerCompanyMap: Map<string, string> | null = null; // can be generically available disregarding different sessions
+const initData = async () => {
+    tickerCompanyMap = await getTickerCompanyMap();
+    console.log(
+        `DEBUG: tickerCompanyMap.get('AMZN') ${tickerCompanyMap.get(
+            'AMZN'
+        )}, tickerCompanyMap.get('AAPL') ${tickerCompanyMap.get('AAPL')}`
+    );
+};
+initData();
+
 // Initialize Databases
 mysqlDB.sequelize.sync();
 
@@ -39,5 +51,5 @@ app.use('/api', userRouter);
 
 /** Server activation */
 app.listen(port, () => {
-    console.log(`The Node server is listening on Port ${port}`);
+    console.log(`INFO: The Node server is listening on Port ${port}`);
 });

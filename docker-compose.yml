@@ -1,20 +1,10 @@
 version: '3.8'
 
 services:
-  mysqldb:
-    image: mysql:8.0.34
-    restart: unless-stopped
-    env_file: ./.env
-    environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
-    ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
-    volumes:
-      - db:/var/lib/mysql
   server:
     depends_on:
       - mysqldb
+      - redis
     build: ./server
     restart: unless-stopped
     env_file: ./.env
@@ -28,6 +18,21 @@ services:
       - MYSQL_DB_PORT=$MYSQLDB_DOCKER_PORT
     stdin_open: true
     tty: true
+  mysqldb:
+    image: mysql:8.0.34
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - mysql_db:/var/lib/mysql
+  redis:
+    image: "redis:7.2.1-alpine3.18"
+    ports:
+      - 6379:6379
 
 volumes:
-  db:
+  mysql_db:
