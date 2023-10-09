@@ -7,7 +7,8 @@ import { mysqlDB } from './databases/mysql.db';
 import { helloRouter } from './routes/hello.router';
 import { authRouter } from './routes/auth.router';
 import { userRouter } from './routes/user.router';
-import { getTickerCompanyMap } from './services/getTickerCompanyMap.service';
+import { getTickerCompanyData, TickerCompanyDataType } from './services/getTickerCompanyMap.service';
+import { tickerCompanyRouter } from './routes/ticker-company.router';
 
 /** Set the running port */
 if (!process.env.SERVER_DOCKER_PORT) {
@@ -30,14 +31,10 @@ app.use(
 );
 
 // Initialize Necessary Data
-export let tickerCompanyMap: Map<string, string> | null = null; // can be generically available disregarding different sessions
+export let tickerCompanyData: TickerCompanyDataType | null = null; // can be generically available disregarding different sessions
 const initData = async () => {
-    tickerCompanyMap = await getTickerCompanyMap();
-    console.log(
-        `DEBUG: tickerCompanyMap.get('AMZN') ${tickerCompanyMap.get(
-            'AMZN'
-        )}, tickerCompanyMap.get('AAPL') ${tickerCompanyMap.get('AAPL')}`
-    );
+    tickerCompanyData = await getTickerCompanyData();
+    console.log(`DEBUG: tickerCompanyData['AMZN'] ${tickerCompanyData['AMZN']}`);
 };
 initData();
 
@@ -47,6 +44,7 @@ mysqlDB.sequelize.sync();
 /** Inject routers, prepend them with the '/api' keyword */
 app.use('/api', helloRouter);
 app.use('/api', authRouter);
+app.use('/api', tickerCompanyRouter);
 app.use('/api', userRouter);
 
 /** Server activation */

@@ -46,15 +46,11 @@ const login = async (req: Request, res: Response) => {
             expiresIn: 30 * 60 // 30 mins
         });
 
-        console.log(
-            `DEBUG: Before token req is: req.headers ${req.headers}, req.body ${req.body}, req.session ${req.session}`
-        );
+        console.log(`DEBUG: Before token, the req has no session.`);
 
         (req.session as any).token = token;
 
-        console.log(
-            `DEBUG: After session setting, the req is: req.headers ${req.headers}, req.body ${req.body}, req.session ${req.session}`
-        );
+        console.log(`DEBUG: After session setting, the req.session.token is: ${req.session?.token}`);
 
         return res.status(200).send({
             id: user.id,

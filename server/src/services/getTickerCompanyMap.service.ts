@@ -8,13 +8,14 @@ const HEADER_VAL = process.env.API_HEADER_VALUE;
 const tickerCompanyRedisKey = 'tickerCompany';
 const tickerCompanyExpiration = 86400; // Refresh after one day
 
-export const getTickerCompanyMap = async (): Promise<Map<string, string>> => {
+export type TickerCompanyDataType = { [key: string]: string };
+
+export const getTickerCompanyData = async (): Promise<TickerCompanyDataType> => {
     const tickerCompanyRedisClient = await createRedisClient();
     const cachedTickerCompanyStr = await getFromRedis(tickerCompanyRedisKey, tickerCompanyRedisClient);
 
     if (cachedTickerCompanyStr) {
-        const tickerCompanyData = JSON.parse(cachedTickerCompanyStr);
-        return new Map<string, string>(Object.entries(tickerCompanyData));
+        return JSON.parse(cachedTickerCompanyStr);
     }
 
     // If not obtained from redis, call endpoint to get TickerCompanyMap
@@ -30,7 +31,7 @@ export const getTickerCompanyMap = async (): Promise<Map<string, string>> => {
         NX: true
     });
 
-    return new Map<string, string>(Object.entries(tickerCompanyData));
+    return tickerCompanyData;
 };
 
 const getFromRedis = async (key: string, client: any): Promise<string | null | undefined> => {

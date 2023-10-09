@@ -15,7 +15,9 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
                 message: 'Unauthorized!'
             });
         }
+        console.log(`DEBUG: the decodedHeaders.id is ${decodedHeaders.id}`);
         req.headers.userId = decodedHeaders.id;
+        console.log(`DEBUG: the req.headers.userId is ${req.headers.userId}`);
         next();
     });
 };
