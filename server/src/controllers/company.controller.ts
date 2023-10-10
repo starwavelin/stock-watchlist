@@ -12,4 +12,4 @@ const getTickerCompanyList = (req: Request, res: Response) => {
     }
 };
 
-export const tickerCompanyController = { getTickerCompanyList };
+export const companyController = { getTickerCompanyList };

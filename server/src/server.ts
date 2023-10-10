@@ -5,11 +5,15 @@ import express from 'express';
 import cookieSession from 'cookie-session';
 import { mysqlDB } from './databases/mysql.db';
 import { mongoDB } from './databases/mongo.db';
-import { helloRouter } from './routes/hello.router';
 import { authRouter } from './routes/auth.router';
 import { userRouter } from './routes/user.router';
-import { getTickerCompanyData, TickerCompanyDataType } from './services/getTickerCompanyMap.service';
-import { tickerCompanyRouter } from './routes/ticker-company.router';
+import {
+    getTickerCompanyData,
+    TickerCompanyDataType,
+    Ticker_Company_Redis_Expiration
+} from './services/getTickerCompanyData.service';
+import { companyRouter } from './routes/company.router';
+import { TickerPriceDataType, Ticker_Price_Redis_Expiration, getPricesData } from './services/getPrices.service';
 
 /** Set the running port */
 if (!process.env.SERVER_DOCKER_PORT) {
@@ -32,12 +36,21 @@ app.use(
 );
 
 // Initialize Necessary Data
-export let tickerCompanyData: TickerCompanyDataType | null = null; // can be generically available disregarding different sessions
-const initData = async () => {
+export let tickerCompanyData: TickerCompanyDataType | null = null; // Generically available disregarding different sessions, reduce the number of hits to COMPANY_LIST_ENDPOINT
+const initCompanyListData = async () => {
     tickerCompanyData = await getTickerCompanyData();
     console.log(`DEBUG: tickerCompanyData['AMZN'] ${tickerCompanyData['AMZN']}`);
 };
-initData();
+initCompanyListData();
+setInterval(initCompanyListData, Ticker_Company_Redis_Expiration * 1000); // Setup a timer to call initCompanyListData every day when the server is up. Unit: miliseconds
+
+export let pricesData: TickerPriceDataType | null = null; // Generically available across sessions, reduce the number of hits to PRICES_ENDPOINT
+const initPricesData = async () => {
+    pricesData = await getPricesData();
+    console.log(`DEBUG: pricesData['AAPL'] ${pricesData['AAPL']}`);
+};
+initPricesData();
+setInterval(initPricesData, Ticker_Price_Redis_Expiration * 1000); // Setup a timer to call initPricesData every 5 seconds when the server is up. Unit: miliseconds
 
 // Initialize Databases
 mysqlDB.sequelize.sync();
@@ -52,9 +65,8 @@ mongoDB.mongoose
     });
 
 /** Inject routers, prepend them with the '/api' keyword */
-app.use('/api', helloRouter);
 app.use('/api', authRouter);
-app.use('/api', tickerCompanyRouter);
+app.use('/api', companyRouter);
 app.use('/api', userRouter);
 
 /** Server activation */
