@@ -15,6 +15,7 @@ import {
 import { companyRouter } from './routes/company.router';
 import { TickerPriceDataType, Ticker_Price_Redis_Expiration, getPricesData } from './services/getPrices.service';
 import { tickerRouter } from './routes/ticker.router';
+import { priceRouter } from './routes/price.router';
 
 /** Set the running port */
 if (!process.env.SERVER_DOCKER_PORT) {
@@ -70,6 +71,7 @@ app.use('/api', authRouter);
 app.use('/api', companyRouter);
 app.use('/api', userRouter);
 app.use('/api', tickerRouter);
+app.use('/api', priceRouter);
 
 /** Server activation */
 app.listen(port, () => {

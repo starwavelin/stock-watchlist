@@ -43,14 +43,10 @@ const login = async (req: Request, res: Response) => {
         const token = jwt.sign({ id: user.id }, config.secret, {
             algorithm: 'HS256',
             allowInsecureKeySizes: true,
-            expiresIn: 30 * 60 // 30 mins
+            expiresIn: 20 * 60 // 20 mins
         });
 
-        console.log(`DEBUG: Before token, the req has no session.`);
-
         (req.session as any).token = token;
-
-        console.log(`DEBUG: After session setting, the req.session.token is: ${req.session?.token}`);
 
         return res.status(200).send({
             id: user.id,
@@ -64,8 +60,7 @@ const login = async (req: Request, res: Response) => {
 };
 
 /**
- * Note: for simplicity I didn't implement logout based on `expiresIn` time,
- * but I think cookie-ssession will auto expire in `expiresIn` seconds
+ * Note: cookie-ssession will auto expire in `expiresIn` seconds defined in the jwt.sign statement above
  */
 const logout = (req: Request, res: Response) => {
     try {

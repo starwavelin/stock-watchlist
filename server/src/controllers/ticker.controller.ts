@@ -4,8 +4,6 @@ import { Ticker } from '../interfaces/userTicker.interface';
 
 const postTickersForUser = async (req: Request, res: Response) => {
     try {
-        console.log(`DEBUG: In the postTickersForUser() ftn, req.headers.userId is ${req.headers.userId}`);
-
         // Try to find the UserTicker record
         const userId = Number(req.headers.userId);
         const user = await UserTicker.findOne({ userId });
@@ -32,7 +30,6 @@ const postTickersForUser = async (req: Request, res: Response) => {
 
 const getTickersForUser = async (req: Request, res: Response) => {
     try {
-        console.log(`DEBUG: In the getTickersForUser() ftn, req.headers.userId is ${req.headers.userId}`);
         const userId = Number(req.headers.userId);
         const user = await UserTicker.findOne({ userId });
 
