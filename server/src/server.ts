@@ -14,6 +14,7 @@ import {
 } from './services/getTickerCompanyData.service';
 import { companyRouter } from './routes/company.router';
 import { TickerPriceDataType, Ticker_Price_Redis_Expiration, getPricesData } from './services/getPrices.service';
+import { tickerRouter } from './routes/ticker.router';
 
 /** Set the running port */
 if (!process.env.SERVER_DOCKER_PORT) {
@@ -47,7 +48,7 @@ setInterval(initCompanyListData, Ticker_Company_Redis_Expiration * 1000); // Set
 export let pricesData: TickerPriceDataType | null = null; // Generically available across sessions, reduce the number of hits to PRICES_ENDPOINT
 const initPricesData = async () => {
     pricesData = await getPricesData();
-    console.log(`DEBUG: pricesData['AAPL'] ${pricesData['AAPL']}`);
+    // console.log(`DEBUG: pricesData['AAPL'] ${pricesData['AAPL']}`);
 };
 initPricesData();
 setInterval(initPricesData, Ticker_Price_Redis_Expiration * 1000); // Setup a timer to call initPricesData every 5 seconds when the server is up. Unit: miliseconds
@@ -68,6 +69,7 @@ mongoDB.mongoose
 app.use('/api', authRouter);
 app.use('/api', companyRouter);
 app.use('/api', userRouter);
+app.use('/api', tickerRouter);
 
 /** Server activation */
 app.listen(port, () => {

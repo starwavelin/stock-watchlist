@@ -12,7 +12,6 @@ export const getFromRedis = async (key: string, client: any): Promise<string | n
 
 let redisClient: any = null;
 export const createRedisClient = async () => {
-    console.log(`INFO: The Redis is listening on Port ${REDIS_PORT}`);
     if (!redisClient) {
         // In the following code, should set host to be 'redis' instead of 'localhost',
         // otherwise the localhost will always refer to the hostmachine or the server container itself.

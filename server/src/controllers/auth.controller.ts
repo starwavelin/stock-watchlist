@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { config } from '../configs/auth.config';
 import { mysqlDB as db } from '../databases/mysql.db';
 import * as bcrypt from 'bcryptjs';
-import { UserData } from '../models/user.model';
+import { UserType } from '../interfaces/user.interface';
 
 const User = db.user;
 
@@ -26,7 +26,7 @@ const login = async (req: Request, res: Response) => {
     try {
         const user = (await User.findOne({
             where: { username: req.body.username }
-        })) as UserData | null;
+        })) as UserType | null;
 
         // handle if username not found
         if (!user) {
@@ -64,8 +64,8 @@ const login = async (req: Request, res: Response) => {
 };
 
 /**
- * Note: for implificity I didn't implement logout based on
- * `expiresIn` time
+ * Note: for simplicity I didn't implement logout based on `expiresIn` time,
+ * but I think cookie-ssession will auto expire in `expiresIn` seconds
  */
 const logout = (req: Request, res: Response) => {
     try {

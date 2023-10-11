@@ -3,7 +3,7 @@ import { mysqlDB as db } from '../databases/mysql.db';
 
 const User = db.user;
 
-const getUsers = async (req: Request, res: Response) => {
+const getAllUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.findAll();
         return res.status(200).send(users);
@@ -12,4 +12,4 @@ const getUsers = async (req: Request, res: Response) => {
     }
 };
 
-export const userController = { getUsers };
+export const userController = { getAllUsers };

@@ -11,4 +11,5 @@ userRouter.use((req: Request, res, next) => {
     next();
 });
 
-userRouter.get(`${url}`, [verifyToken], userController.getUsers);
+// This endpoint is for testing purpose only. In the real world, only Admin may have access to all users' profile data
+userRouter.get(`${url}`, [verifyToken], userController.getAllUsers);
