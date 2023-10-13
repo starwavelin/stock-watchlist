@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    title = 'client';
+    title = 'client'; // System auto-generated field, for spec testing purpose
+
+    constructor() {}
+
+    ngOnInit(): void {}
 }

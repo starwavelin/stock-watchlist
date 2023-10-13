@@ -8,9 +8,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { StockWatchlistComponent } from './components/stock-watchlist/stock-watchlist.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, RegisterComponent, StockWatchlistComponent],
+    declarations: [AppComponent, LoginComponent, RegisterComponent, StockWatchlistComponent, NavBarComponent],
     imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
     providers: [],
     bootstrap: [AppComponent]

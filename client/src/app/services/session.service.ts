@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IUserProfile } from '../interfaces/user-profile.interface';
+import { Subject } from 'rxjs';
 
 /**
  * SessionService manages user information (username, email) inside Browser’s Session Storage.
@@ -11,14 +12,22 @@ const USER_KEY = 'auth-user';
     providedIn: 'root'
 })
 export class SessionService {
+    private loginStatusSubject = new Subject<boolean>();
+    loginStatus$ = this.loginStatusSubject.asObservable(); // For the caller to use
+
     constructor() {}
+
+    // Invoke this function when user logs in or logs out to make the Subject chagne
+    emitLoginStatusChange(isLoggedIn: boolean) {
+        this.loginStatusSubject.next(isLoggedIn);
+    }
 
     saveUser(user: IUserProfile): void {
         window.sessionStorage.removeItem(USER_KEY);
         window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     }
 
-    getUser(): any {
+    getUser(): IUserProfile {
         const user = window.sessionStorage.getItem(USER_KEY);
         return user ? JSON.parse(user) : {};
     }

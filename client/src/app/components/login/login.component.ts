@@ -48,6 +48,7 @@ export class LoginComponent {
                     this.sessionService.saveUser(data);
                     this.isLoggedIn = true;
                     this.isLoginFailed = false;
+                    this.sessionService.emitLoginStatusChange(true);
                     this.router.navigate(['/watchlist']);
                 },
                 error: (err) => {

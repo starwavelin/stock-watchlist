@@ -1,5 +1,11 @@
 <div class="col-md-12">
     <div class="card card-container">
+        <div class="alert alert-warning" *ngIf="!isLoggedIn">
+            If you haven't registered, please goto the
+            <a class='nav-link text-primary' [routerLink]="['/register']">Registration</a>
+            page to register first.
+        </div>
+
         <form *ngIf="!isLoggedIn" name="loginForm" [formGroup]="loginForm" (submit)="onSubmit()">
             <div class="form-group">
                 <label for="username">Username</label>

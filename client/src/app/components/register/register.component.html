@@ -1,1 +1,44 @@
-<p>register works!</p>
+<div class="col-md-12">
+    <div class="card card-container">
+        <form *ngIf="!isRegSuccessful" name="regForm" [formGroup]="regForm" (submit)="onSubmit()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" class="form-control" formControlName="username" required />
+                <div class="alert alert-danger" *ngIf="regForm.get('username')?.errors && isOnSubmit">
+                    Username is required!
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" formControlName="email" required />
+                <div class="alert alert-danger" *ngIf="regForm.get('email')?.errors && isOnSubmit">
+                    Email is required!
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" formControlName="password" required />
+                <div class="alert alert-danger" *ngIf="regForm.get('password')?.errors && isOnSubmit">
+                    <div *ngIf="regForm.get('password')?.errors?.['required']">Password is required</div>
+                    <div *ngIf="regForm.get('password')?.errors?.['minlength']">
+                        Password must be at least 6 characters
+                    </div>
+                </div>
+            </div>
+            <div>&nbsp;</div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block">Register</button>
+            </div>
+            <div class="form-group">
+                <div class="alert alert-danger" *ngIf="isRegFailed">
+                    Registration failed: {{ errorMessage }}
+                </div>
+            </div>
+        </form>
+
+        <div class="alert alert-success" *ngIf="isRegSuccessful">
+            Registration succeeded!<br />
+            Please goto <a class='nav-link text-primary' [routerLink]="['/login']">Login</a> page to login with your credentials.
+        </div>
+    </div>
+</div>
