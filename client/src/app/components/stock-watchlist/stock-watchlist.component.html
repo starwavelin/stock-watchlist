@@ -6,7 +6,13 @@
         <div class="row">
             <div class="col-md-2">Add New Stock:</div>
             <div class="col-md-4">
-                <!-- <input type='text' [(ngModel)]="listFilter" /> -->
+                <!-- Search Bar -->
+                <input type='text' [(ngModel)]="searchTerm" (input)="filterCompanies()"  placeholder="Please enter a ticker or company name of a stock..."/>
+                <div *ngIf="filteredCompanies.length" class="dropdown">
+                    <div *ngFor="let ticker of filteredCompanies" (click)="selectCompany(ticker)">
+                        {{ ticker }} - {{ selectableCompaneis[ticker] }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="table-responsive">
@@ -29,6 +35,3 @@
         </div>
     </div>
 </div>
-
-All company obj is: {{ this.allCompanies | json }} <br />
-selectableCompanies is: {{ this.selectableCompanies | json }}

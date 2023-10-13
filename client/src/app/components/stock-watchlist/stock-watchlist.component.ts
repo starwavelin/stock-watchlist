@@ -15,13 +15,17 @@ import { ITicker } from '../../interfaces/ticker.interface';
 export class StockWatchlistComponent {
     pageTitle = 'Stock Watchlist';
     allCompanies: TickerCompany = {};
-    selectableCompanies: TickerCompany = {};
     companiesSub!: Subscription;
 
     tickers: ITicker[] = [];
     tickersSub!: Subscription;
 
     errorMessage: string = '';
+
+    // For Search Bar
+    selectableCompaneis: TickerCompany = {};
+    searchTerm: string = '';
+    filteredCompanies: string[] = [];
 
     constructor(
         private authService: AuthService,
@@ -55,6 +59,41 @@ export class StockWatchlistComponent {
     ngOnDestroy() {
         this.companiesSub.unsubscribe();
         this.tickersSub.unsubscribe();
+    }
+
+    filterCompanies(): void {
+        if (!this.searchTerm) {
+            this.filteredCompanies = [];
+            return;
+        }
+
+        this.selectableCompaneis = this.getSelectableCompanies();
+        const lowercaseSearchTerm = this.searchTerm.toLowerCase();
+
+        // Filter to obtain options based on both ticker and company names
+        this.filteredCompanies = Object.keys(this.selectableCompaneis).filter(
+            (ticker) =>
+                ticker.toLowerCase().includes(lowercaseSearchTerm) ||
+                this.selectableCompaneis[ticker].toLowerCase().includes(lowercaseSearchTerm)
+        );
+    }
+
+    selectCompany(ticker: string) {
+        console.log(`selected Ticker is: ${ticker}`); //TODO: should add ticker to the tickers list
+        this.searchTerm = ''; // Clear the search term
+        this.filteredCompanies = []; // Clear the dropdown
+
+        // update selectable companies, b/c the available companies should -1 after user makes one selection
+        this.selectableCompaneis = this.getSelectableCompanies();
+    }
+
+    getSelectableCompanies(): TickerCompany {
+        const selectableCompanies = { ...this.allCompanies };
+        const keysToRemvoe = this.tickers.map((t) => t.ticker);
+        keysToRemvoe.forEach((key) => {
+            delete selectableCompanies[key];
+        });
+        return selectableCompanies;
     }
 
     saveAndLogout(): void {
