@@ -18,7 +18,7 @@ const register = async (req: Request, res: Response) => {
             .status(200)
             .send({ message: `A new user with username=${req.body.username} was created successfully!` });
     } catch (e) {
-        res.status(500).send('The registration process erred out!');
+        res.status(500).send({ message: 'The registration process erred out!' });
     }
 };
 
@@ -55,7 +55,7 @@ const login = async (req: Request, res: Response) => {
         });
     } catch (e) {
         console.log(`The error is ${JSON.stringify(e)}`);
-        res.status(500).send('The login process erred out!');
+        res.status(500).send({ message: 'The login process erred out!' });
     }
 };
 
@@ -67,7 +67,7 @@ const logout = (req: Request, res: Response) => {
         req.session = null;
         return res.status(200).send({ message: "You've been successfully logged out!" });
     } catch (e) {
-        res.status(500).send('The logout process erred out!');
+        res.status(500).send({ message: 'The logout process erred out!' });
     }
 };
 

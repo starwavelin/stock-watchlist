@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IUserProfile } from '../interfaces/user-profile.interface';
 
 /**
  * SessionService manages user information (username, email) inside Browser’s Session Storage.
@@ -12,7 +13,7 @@ const USER_KEY = 'auth-user';
 export class SessionService {
     constructor() {}
 
-    saveUser(user: any): void {
+    saveUser(user: IUserProfile): void {
         window.sessionStorage.removeItem(USER_KEY);
         window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     }
