@@ -9,11 +9,12 @@ import { StockWatchlistComponent } from './components/stock-watchlist/stock-watc
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { httpInterceptorProviders } from './utils/http.interceptor';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent, RegisterComponent, StockWatchlistComponent, NavBarComponent],
     imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
-    providers: [],
+    providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
