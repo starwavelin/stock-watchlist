@@ -20,6 +20,8 @@ export class StockWatchlistComponent {
     tickers: ITicker[] = [];
     tickersSub!: Subscription;
 
+    priceSub!: Subscription;
+
     errorMessage: string = '';
 
     // For Search Bar
@@ -78,13 +80,27 @@ export class StockWatchlistComponent {
         );
     }
 
-    selectCompany(ticker: string) {
-        console.log(`selected Ticker is: ${ticker}`); //TODO: should add ticker to the tickers list
-        this.searchTerm = ''; // Clear the search term
-        this.filteredCompanies = []; // Clear the dropdown
+    async selectCompany(ticker: string) {
+        this.priceSub = this.dataService.getPricesForUser(ticker).subscribe({
+            next: (tickerPrice) => {
+                const tickerObj = {
+                    ticker: ticker,
+                    company: this.allCompanies[ticker],
+                    price: tickerPrice[ticker]
+                };
+                this.tickers.push(tickerObj);
+            },
+            error: (err) => {
+                this.errorMessage = err;
+            },
+            complete: () => {
+                this.priceSub.unsubscribe();
+            }
+        });
 
-        // update selectable companies, b/c the available companies should -1 after user makes one selection
-        this.selectableCompaneis = this.getSelectableCompanies();
+        // Clear the search term and dropdown
+        this.searchTerm = '';
+        this.filteredCompanies = [];
     }
 
     getSelectableCompanies(): TickerCompany {
@@ -97,14 +113,17 @@ export class StockWatchlistComponent {
     }
 
     saveAndLogout(): void {
-        this.authService.logout().subscribe({
-            next: (data) => {
-                console.log(`Data received in the logging out process: ${data}`);
-                this.sessionService.clear();
-                this.router.navigate(['/login']);
+        // Save the current tickers for the user
+        this.tickersSub = this.dataService.postTickersForUser(this.tickers).subscribe({
+            next: (obj) => {
+                console.log(obj?.message);
             },
             error: (err) => {
-                console.log(`logout erred: ${err}`);
+                this.errorMessage = err;
+            },
+            complete: () => {
+                // Logout
+                this.router.navigate(['/logout']);
             }
         });
     }

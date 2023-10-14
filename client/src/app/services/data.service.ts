@@ -7,7 +7,7 @@ import { IPrice } from '../interfaces/price.type';
 
 const COMPANIES_URL = 'http://localhost:8088/api/companies'; // Get all available ticker-company names, for the user search purpose
 const TICKERS_URL = 'http://localhost:8088/api/users/tickers'; // Load and Post tickers for a user
-const PRICES_URL = 'http://localhost:8088/api/users/tickers'; // Get the prices of the current tickers a user has, for the price refresh purpose
+const PRICES_URL = 'http://localhost:8088/api/users/prices'; // Get the prices of the current tickers a user has, for the price refresh purpose
 
 @Injectable({
     providedIn: 'root'

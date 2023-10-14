@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IUserProfile } from '../../interfaces/user-profile.interface';
 import { SessionService } from '../../services/session.service';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-nav-bar',
@@ -13,11 +11,7 @@ export class NavBarComponent {
     isLoggedIn: boolean = false;
     username: string = '';
 
-    constructor(
-        private sessionService: SessionService,
-        private authService: AuthService,
-        private router: Router
-    ) {}
+    constructor(private sessionService: SessionService) {}
 
     ngOnInit(): void {
         this.sessionService.loginStatus$.subscribe((isLoggedIn) => {
@@ -26,20 +20,6 @@ export class NavBarComponent {
             if (this.isLoggedIn) {
                 const user: IUserProfile = this.sessionService.getUser();
                 this.username = user.username;
-            }
-        });
-    }
-
-    logout(): void {
-        this.authService.logout().subscribe({
-            next: (data) => {
-                console.log(`Data received in the logging out process: ${JSON.stringify(data)}`);
-                this.sessionService.clear();
-                this.sessionService.emitLoginStatusChange(false);
-                this.router.navigate(['/login']);
-            },
-            error: (err) => {
-                console.log(`logout erred: ${err}`);
             }
         });
     }

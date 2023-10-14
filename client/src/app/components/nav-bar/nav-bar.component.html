@@ -6,6 +6,6 @@
         <li *ngIf="!isLoggedIn"><a class='nav-link' [routerLink]="['/register']">Register</a></li>
         <li *ngIf="!isLoggedIn"><a class='nav-link' [routerLink]="['/login']">Login</a></li>
         <li *ngIf="isLoggedIn"><a class='nav-link text-secondary' [routerLink]="['/watchlist']"> Logged in as: {{ username }}. Watch my stock list</a></li>
-        <li *ngIf="isLoggedIn"><a class='nav-link text-secondary' (click)="logout()"> Logout (without saving the current state)</a></li>
+        <li *ngIf="isLoggedIn"><a class='nav-link text-secondary' [routerLink]="['/logout']"> Logout (without saving the current state)</a></li>
     </ul>
 </nav>

@@ -10,9 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { httpInterceptorProviders } from './utils/http.interceptor';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, RegisterComponent, StockWatchlistComponent, NavBarComponent],
+    declarations: [AppComponent, LoginComponent, RegisterComponent, StockWatchlistComponent, NavBarComponent, LogoutComponent],
     imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule, FormsModule],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
