@@ -11,7 +11,7 @@ const postTickersForUser = async (req: Request, res: Response) => {
 
         if (user) {
             // reassign tickers field for the given user
-            user.tickers.pull({}); // mongoose array is not a simple JS array so need to empty it this way
+            await user.updateOne({ $unset: { tickers: '' } }); // reset tickers to be empty in the DB for a given user
             user.tickers.push(...tickersToAdd);
             await user.save();
         } else {
