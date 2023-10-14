@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IUserProfile } from '../interfaces/user-profile.interface';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 /**
  * SessionService manages user information (username, email) inside Browser’s Session Storage.
@@ -13,7 +13,7 @@ const USER_KEY = 'auth-user';
 })
 export class SessionService {
     private loginStatusSubject = new Subject<boolean>();
-    loginStatus$ = this.loginStatusSubject.asObservable(); // For the caller to use
+    loginStatus$: Observable<boolean> = this.loginStatusSubject.asObservable(); // For the caller to use
 
     constructor() {}
 

@@ -6,6 +6,7 @@ import { TickerCompany } from '../../interfaces/ticker-company.type';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { ITicker } from '../../interfaces/ticker.interface';
+import { IPrice } from '../../interfaces/price.type';
 
 @Component({
     selector: 'app-stock-watchlist',
@@ -38,7 +39,7 @@ export class StockWatchlistComponent {
 
     ngOnInit(): void {
         this.companiesSub = this.dataService.getCompanies().subscribe({
-            next: (companies) => {
+            next: (companies: TickerCompany) => {
                 this.allCompanies = companies;
             },
             error: (err) => {
@@ -48,7 +49,7 @@ export class StockWatchlistComponent {
         });
 
         this.tickersSub = this.dataService.getTickersForUser().subscribe({
-            next: (tickers) => {
+            next: (tickers: ITicker[]) => {
                 this.tickers = tickers;
             },
             error: (err) => {
@@ -82,7 +83,7 @@ export class StockWatchlistComponent {
 
     async selectCompany(ticker: string) {
         this.priceSub = this.dataService.getPricesForUser(ticker).subscribe({
-            next: (tickerPrice) => {
+            next: (tickerPrice: IPrice) => {
                 const tickerObj = {
                     ticker: ticker,
                     company: this.allCompanies[ticker],
