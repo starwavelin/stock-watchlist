@@ -50,7 +50,11 @@ export class StockWatchlistComponent {
 
         this.tickersSub = this.dataService.getTickersForUser().subscribe({
             next: (tickers: ITicker[]) => {
-                this.tickers = tickers;
+                this.tickers = tickers.sort((t1, t2) => {
+                    if (t1.ticker < t2.ticker) return -1;
+                    else if (t1.ticker > t2.ticker) return 1;
+                    return 0;
+                });
             },
             error: (err) => {
                 this.errorMessage = err;
@@ -111,6 +115,10 @@ export class StockWatchlistComponent {
             delete selectableCompanies[key];
         });
         return selectableCompanies;
+    }
+
+    deleteTicker(index: number) {
+        this.tickers.splice(index, 1);
     }
 
     saveAndLogout(): void {

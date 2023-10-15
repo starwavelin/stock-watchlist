@@ -7,7 +7,7 @@
             <div class="col-md-2">Add New Stock:</div>
             <div class="col-md-4">
                 <!-- Search Bar -->
-                <input type='text' [(ngModel)]="searchTerm" (input)="filterCompanies()"  placeholder="Please enter a ticker or company name of a stock..."/>
+                <input type='text' class="search-bar" [(ngModel)]="searchTerm" (input)="filterCompanies()"  placeholder="Enter ticker or company name"/>
                 <div *ngIf="filteredCompanies.length" class="dropdown">
                     <div *ngFor="let ticker of filteredCompanies" (click)="selectCompany(ticker)">
                         {{ ticker }} - {{ selectableCompaneis[ticker] }}
@@ -22,13 +22,15 @@
                         <th>Stock Symbol</th>
                         <th>Company</th>
                         <th>Price</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor='let ticker of tickers'>
+                    <tr *ngFor='let ticker of tickers; let i = index'>
                         <td>{{ ticker.ticker}}</td>
                         <td>{{ ticker.company }}</td>
                         <td>{{ ticker.price | currency }}</td>
+                        <td><button class="btn btn-secondary" (click)="deleteTicker(i)">Remove</button></td>
                     </tr>
                 </tbody>
             </table>

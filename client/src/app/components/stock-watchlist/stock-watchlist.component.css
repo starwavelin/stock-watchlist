@@ -1,6 +1,9 @@
 thead {
     color: #337ab8
 }
+.search-bar {
+    width: 16rem;
+}
 
 .dropdown {
     border: 1px solid #ccc;
