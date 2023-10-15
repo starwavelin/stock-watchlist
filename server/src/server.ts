@@ -28,12 +28,12 @@ const port: number = parseInt(process.env.SERVER_DOCKER_PORT as string, 10);
 const app = express();
 
 app.use(express.json()); // parse requests of content-type - application/json
-app.use(
-    cors({
-        credentials: true,
-        origin: ['http://localhost:4200'] // The URL for the Angular Client
-    })
-);
+
+const corsOptions = {
+    credentials: true,
+    origin: process.env.CLIENT_ORIGIN || 'http://localhost:4200' // The URL for the Angular Client
+};
+app.use(cors(corsOptions));
 app.use(
     cookieSession({
         name: 'xian-stock-watchlist-session',

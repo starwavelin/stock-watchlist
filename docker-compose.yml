@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  client:
+    depends_on:
+      - server
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - $ANGULAR_LOCAL_PORT:$ANGULAR_DOCKER_PORT
+    networks:
+      - frontend
   server:
     depends_on:
       - mysqldb
@@ -22,8 +32,12 @@ services:
       - MONGO_DB_PASSWORD=$MONGO_ROOT_PASSWORD
       - MONGO_DB_NAME=$MONGO_DATABASE
       - MONGO_DB_PORT=$MONGO_DOCKER_PORT
+      - CLIENT_ORIGIN=$CLIENT_ORIGIN
     stdin_open: true
     tty: true
+    networks:
+      - backend
+      - frontend
   mysqldb:
     image: mysql:8.0.34
     restart: unless-stopped
@@ -35,6 +49,8 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - mysql_db:/var/lib/mysql
+    networks:
+      - backend
   mongodb:
     image: mongo:7.0.2
     restart: unless-stopped
@@ -46,11 +62,19 @@ services:
       - $MONGO_LOCAL_PORT:$MONGO_DOCKER_PORT
     volumes:
       - mongo_db:/data/db
+    networks:
+      - backend
   redis:
     image: "redis:7.2.1-alpine3.18"
     ports:
       - 6379:6379
+    networks:
+      - backend
 
 volumes:
   mysql_db:
   mongo_db:
+
+networks:
+  backend:
+  frontend:
