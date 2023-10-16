@@ -21,7 +21,7 @@ Caching: Redis
 
 ### Getting Started
 
-1. Unzip the .zip file if you receive a solution.zip file from the author.
+1. Unzip the .zip file if you receive a solution.zip file from the author. And when doing unzip, you can issue command `$ unzip solution.zip -d YOUR_PREFRRED_DIRECTORY`
 2. From the directory of `stock-wathlist`, issue the command `$ make up` to build all the necessary docker images and bring up all the sercies.
 3. `$ make open-app` to open the application on your default browser, with `http://localhost:8200` to be the default URL to start with.
 4. You can start from the Register tab from the UI to create an account for a user.
