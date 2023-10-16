@@ -29,6 +29,8 @@ Caching: Redis
 
 ### Demo
 
+You can view a demo on how to start and use this app via [here](https://youtu.be/LMEPXB4q6ng)
+
 ### References
 
 1. Login and Registration Example with JWT: [Link](https://www.bezkoder.com/node-js-angular-12-jwt-auth/)
