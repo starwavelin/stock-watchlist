@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { SessionService } from '../../services/session.service';
 import { Router } from '@angular/router';
 import { TickerCompany } from '../../interfaces/ticker-company.type';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, interval, switchMap } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { ITicker } from '../../interfaces/ticker.interface';
 import { IPrice } from '../../interfaces/price.type';
@@ -21,7 +19,9 @@ export class StockWatchlistComponent {
     tickers: ITicker[] = [];
     tickersSub!: Subscription;
 
-    priceSub!: Subscription;
+    priceSub!: Subscription; // Used when adding a new stock, to get the price of this new stock
+    priceRefreshSub!: Subscription; // Used for refreshing the prices of all the current stocks
+    PRICE_REFRESH_INTERVAL: number = 5 * 1000; // 5 seconds
 
     errorMessage: string = '';
 
@@ -31,8 +31,6 @@ export class StockWatchlistComponent {
     filteredCompanies: string[] = [];
 
     constructor(
-        private authService: AuthService,
-        private sessionService: SessionService,
         private router: Router,
         private dataService: DataService
     ) {}
@@ -60,6 +58,33 @@ export class StockWatchlistComponent {
                 this.errorMessage = err;
             },
             complete: () => {}
+        });
+
+        // Price Refresh Logic
+        this.priceRefreshSub = interval(this.PRICE_REFRESH_INTERVAL)
+            .pipe(
+                filter(() => {
+                    return this.tickers.length > 0 && this.isMarketOpen();
+                }),
+                switchMap(() => {
+                    const tickersStr = this.tickers.map((t) => t.ticker).join(',');
+                    return this.dataService.getPricesForUser(tickersStr);
+                })
+            )
+            .subscribe((updatedTickerPrices: IPrice) => this.updateTickers(updatedTickerPrices));
+    }
+
+    isMarketOpen(): boolean {
+        const now = new Date();
+        const currHour = now.getUTCHours();
+        // Market is open from 9:30am to 4pm in ET, which translates to 14:30 - 21:00 UTC (Regular) and 13:30-20:00 UTC (Eastern in Daylight saving)
+        // So for simplicity, I consider 13:30 - 21:00 UTC
+        return currHour >= 13 && currHour <= 21;
+    }
+
+    updateTickers(newTickerPrices: IPrice) {
+        this.tickers.forEach((t) => {
+            t.price = newTickerPrices[t.ticker];
         });
     }
 
