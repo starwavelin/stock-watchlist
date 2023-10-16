@@ -91,6 +91,7 @@ export class StockWatchlistComponent {
     ngOnDestroy() {
         this.companiesSub.unsubscribe();
         this.tickersSub.unsubscribe();
+        this.priceRefreshSub.unsubscribe();
     }
 
     filterCompanies(): void {
