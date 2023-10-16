@@ -22,16 +22,12 @@ Caching: Redis
 ### Getting Started
 
 1. Unzip the .zip file if you receive a solution.zip file from the author. And when doing unzip, you can issue command `$ unzip solution.zip -d YOUR_PREFRRED_DIRECTORY`
-2. From the directory of `stock-wathlist`, issue the command `$ make up` to build all the necessary docker images and bring up all the sercies.
+2. From the directory of `YOUR_PREFRRED_DIRECTORY` (ie. `stock-wathlist`), issue the command `$ make up` to build all the necessary docker images and bring up all the sercies.
 3. `$ make open-app` to open the application on your default browser, with `http://localhost:8200` to be the default URL to start with.
 4. You can start from the Register tab from the UI to create an account for a user.
 5. For the make commands, you may issue command `$ make help` to see all the available commands that might be useful to you.
 
-### Note
-
-Current Limitation:
-
-1. Please avoid directly use the Refresh button from browser after a user logs into the application. If in case you click the Refresh button that causes the tab not to display the Logout tab for you, you can put `http://localhost:8200/logout` and hit enter to logout the current user.
+### Demo
 
 ### References
 
