@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IUserProfile } from '../../interfaces/user-profile.interface';
 import { SessionService } from '../../services/session.service';
-import { Subscription, interval, switchMap } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
     selector: 'app-nav-bar',
@@ -12,7 +12,7 @@ export class NavBarComponent {
     isLoggedIn: boolean = false;
     username: string = '';
     loginStatusSub!: Subscription;
-    LOGIN_STATUS_REFRESH_INTERVAL: number = 1000; // 1 seconds
+    LOGIN_STATUS_REFRESH_INTERVAL: number = 1000; // 1 second
 
     constructor(private sessionService: SessionService) {}
 

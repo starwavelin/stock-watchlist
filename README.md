@@ -6,6 +6,10 @@ Backend: Node.js (v.18), Express Framework in TypeScript
 Databases: MySQL, and MongoDB  
 Caching: Redis
 
+### Demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LMEPXB4q6ng?si=hMpmyveHFX6FrInA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ### Features Implemented
 
 1. This app supports users log in and log out, and provides a single screen with a search bar, and a list of stocks with their current prices.
@@ -26,10 +30,6 @@ Caching: Redis
 3. `$ make open-app` to open the application on your default browser, with `http://localhost:8200` to be the default URL to start with.
 4. You can start from the Register tab from the UI to create an account for a user.
 5. For the make commands, you may issue command `$ make help` to see all the available commands that might be useful to you.
-
-### Demo
-
-You can view a demo on how to start and use this app via [here](https://youtu.be/LMEPXB4q6ng)
 
 ### References
 
