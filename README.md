@@ -8,7 +8,7 @@ Caching: Redis
 
 ### Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LMEPXB4q6ng" frameborder="0" allowfullscreen></iframe>
+[![Demo of Stock Watchlist](https://img.youtube.com/vi/LMEPXB4q6ng/maxresdefault.jpg)](https://www.youtube.com/watch?v=LMEPXB4q6ng)
 
 ### Features Implemented
 
